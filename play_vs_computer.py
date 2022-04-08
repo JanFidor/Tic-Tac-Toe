@@ -1,4 +1,4 @@
-from model import TicTacToe
+from tic_tac_toe import TicTacToe
 import neat
 
 def play_game(net, config):

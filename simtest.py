@@ -5,7 +5,7 @@ Test the performance of the best genome produced by evolve-feedforward.py.
 from __future__ import print_function
 import os
 import pickle
-import model
+import tic_tac_toe
 import neat
 import visualize
 from play_vs_computer import play_game
@@ -27,7 +27,7 @@ local_dir = os.path.dirname(__file__)
 config_path = os.path.join(local_dir, 'config')
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,neat.DefaultSpeciesSet, neat.DefaultStagnation,config_path)
 
-sim = model.TicTacToe()
+sim = tic_tac_toe.TicTacToe()
 
 play_game(c, config)
 

@@ -5,7 +5,7 @@ Single-pole balancing experiment using a feed-forward neural network.
 from __future__ import print_function
 import os
 import pickle
-import model
+import tic_tac_toe
 import neat
 import visualize
 from play_vs_computer import play_game
@@ -17,7 +17,7 @@ generations = 40
 
 def eval_game(genomes, config):
     nets = [neat.nn.FeedForwardNetwork.create(genome, config) for genome in genomes]
-    sim = model.TicTacToe()
+    sim = tic_tac_toe.TicTacToe()
 
     for i in range(runs_per_net):
         # Run the given simulation for up to num_steps time steps.
