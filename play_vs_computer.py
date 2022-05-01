@@ -18,10 +18,12 @@ def play_game(net, config):
 def human_move(sim, player):
     x = int(input("x: "))
     y = int(input("y: "))
-    sim.make_move(x, y, player)
+    sim.make_move(x, y)
 
 def ai_move(sim, player, ai):
-    states = sim.get_states(player)
-    action = ai.activate(states)
+    player_states = sim.get_states(player)
+    opponent_states = sim.get_states(1 - player)
+
+    action = ai.activate(player_states + opponent_states)
     move = sim.accuator(action)
-    sim.make_move(*move, player)
+    sim.make_move(*move)

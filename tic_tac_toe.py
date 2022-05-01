@@ -73,8 +73,9 @@ class TicTacToe:
     
     def accuator(self, moves):
         filtered_moves = [move * filter for move, filter in zip(moves, self._legal_move_filter())]
-        sorted_moves = sorted(enumerate(filtered_moves), key=lambda x:x[1])
-        location = sorted_moves[0]
+        sorted_moves = reversed(sorted(enumerate(filtered_moves), key=lambda x:x[1]))
+        
+        location = list(sorted_moves)[0][0]
         return location % self.size, location // self.size
         
     

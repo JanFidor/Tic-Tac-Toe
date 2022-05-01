@@ -3,21 +3,23 @@ import math
 import random
 
 class Tournament:
-    def __init__(self, genomes):
-        self.id_to_genome = {id : genome for id, genome in genomes}
-        self.population_size = len(genomes)
+    def __init__(self, id_net_genomes):
+        self.id_to_genome = {id : genome for id, _, genome in id_net_genomes}
+        self.id_to_net = {id : net for id, net, _ in id_net_genomes}
+        self.population_size = len(id_net_genomes)
 
 
     def play_tournament(self):
-        future_games = self.id_to_genome.keys
+        future_games = list(self.id_to_net.keys())
         random.shuffle(future_games)
 
-        for _ in range(math.log2(self.population_size)):
+        tournament_depth = int(math.log2(self.population_size))
+        for _ in range(tournament_depth):
             curr_games = future_games.copy()
             future_games = []
             for i in range(0, len(curr_games), 2):
-                nets = [self.id_to_genome[net_id] for net_id in curr_games[i : i + 2]]
-                winner_id = self.get_winner_id(nets)
+                net_ids = curr_games[i : i + 2]
+                winner_id = self.get_winner_id(net_ids)
                 self.id_to_genome[winner_id].fitness += 1.0
                 future_games.append(winner_id)
 
@@ -31,10 +33,10 @@ class Tournament:
             if winner_id != None:
                 scores[winner_id] += 1
         
-        if max(scores.values) == min(scores.values):
-            return random.choice(scores.keys)
-        
-        return max(scores.items, lambda x: x[1])[0]
+        if max(scores.values()) == min(scores.values()):
+            return random.choice(list(scores.keys()))
+            
+        return max(scores.items(), key=lambda x:x[1])[0]
         
     
     def play_game(self, players):
@@ -55,7 +57,7 @@ class Tournament:
         player_states = sim.get_states(player)
         opponent_states = sim.get_states(1 - player)
 
-        net = self.id_to_genome[net_id]
+        net = self.id_to_net[net_id]
         action = net.activate(player_states + opponent_states)
         move = sim.accuator(action)
 
